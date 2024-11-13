@@ -1,15 +1,13 @@
 # Ex.05 Design a Website for Server Side Processing
-## Date:
+
 
 ## AIM:
- To design a website to calculate the power of a lamp filament in an incandescent bulb in the server side. 
-
+To design a website to find surface area of a Right Cylinder in server side.
 
 ## FORMULA:
-P = I<sup>2</sup>R
-<br> P --> Power (in watts)
-<br> I --> Intensity
-<br> R --> Resistance
+Surface Area = 2Πrh + 2Πr<sup>2</sup>
+<br>r --> Radius of Right Cylinder
+<br>h --> Height of Right Cylinder
 
 ## DESIGN STEPS:
 
@@ -32,13 +30,140 @@ Create a HTML file to implement form based input and output.
 Publish the website in the given URL.
 
 ## PROGRAM :
+```
+#math.html
+
+<html>
+<head> 
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Surface Area of Right Cylinder</title>
+
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <style type="text/css">
+        * {
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        }
+
+        body {
+            background-color:black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .box {
+            display: block;
+            width: 550px;
+            min-height: 300px;
+            font-size: 20px;
+            background-color: rgba(255, 255, 255, 0.492);
+            animation: colorChange 10s infinite; 
+        }
+
+        .formelt {
+            text-align: center;
+            margin-top: 7px;
+            margin-bottom: 6px;
+        }
+
+        h1 {
+            color: black;
+            text-align: center;
+            padding-top: 20px;
+        }
+        h2{
+            color:bisque;
+            animation: colorChange 2s infinite;
+        }
+        input{
+            margin: 5px;
+            padding: 5px;
+            border-radius: 5px;
+            border: none;
+        }
+        @keyframes colorChange {
+            0% { color: black; }
+            25% { color: green; }
+            50% { color: blue; }
+            50% { color:purple; }
+            100% { color: red; } 
+        }
+    </style>
+</head>
+
+
+<body>
+    <div class="box">
+        <h1>Surface Area of Right Cylinder </h1>
+        <h2> Tarunika.D (212223040227) </h2>
+
+        <form method="POST">
+            <div class="formelt">
+                Radius: <input type="text" name="Radius" value="{{r}}"> (in m)<br>
+            </div>
+            <div class="formelt">
+                Height: <input type="text" name="Height" value="{{h}}"> (in m)<br>
+            </div>                
+            <div class="formelt">
+                <input type="submit" value="Calculate"><br>
+            </div>
+            <div class="formelt">
+                Area: <input type="text" name="area" value="{{area}}"> m<sup>2</sup><br>
+            </div>
+            {% csrf_token %}
+        </form>
+    </div>
+</body>
+</html>
+```
+```
+#views.py
+from django.shortcuts import render
+
+def surfacerightcylarea(request):
+    context = {}
+    context['area'] = "0"
+    context['r'] = "0"
+    context['h'] = "0"
+    
+    if request.method == 'POST':
+        print("POST method is used")
+        r = float(request.POST.get('Radius', '0'))
+        h = float(request.POST.get('Height', '0'))
+        
+        print('request =', request)
+        print('Radius =', r)
+        print('Height =', h)
+        
+        surfacearea = (2 * 3.14 * r * h) + (2 * 3.14 * r ** 2)
+        context['area'] = surfacearea
+        context['r'] = r
+        context['h'] = h
+        
+        print('surface area =', surfacearea)
+        
+    return render(request, 'mathapp/math.html', context)
+```
+```
+#urls.py
+from django.contrib import admin
+from django.urls import path
+from mathapp import views
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('areaofrectangle/',views.surfacerightcylarea,name="surfaceareaofrightanglecylinder"),
+    path('',views.surfacerightcylarea,name="surfaceareaofrightanglecylinderroot")
+]
+```
 
 
 ## SERVER SIDE PROCESSING:
-
+![alt text](<Screenshot 2024-04-30 133306.png>)
 
 ## HOMEPAGE:
 
-
+![alt text](<Screenshot 2024-04-30 133145.png>)
 ## RESULT:
 The program for performing server side processing is completed successfully.
